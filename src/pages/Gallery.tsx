@@ -8,27 +8,13 @@ import React, { useState } from 'react';
 export function Gallery() {
   const { ref, hasIntersected } = useIntersectionObserver({ threshold: 0.1 });
 
-  // Use images from public folder
-  const galleryImages = Array.from({ length: 12 }, (_, i) => {
-    const imgNumber = i + 1;
-    // Skip image 2
-    if (imgNumber === 2) {
-      return {
-        id: imgNumber,
-        title: `Gallery Image ${imgNumber}`,
-        description: "Professional car detailing work",
-        src: null,
-      };
-    }
-    // Only images 1, 3, 4, 5, 6, 7 exist in public
-    const src = [1, 3, 4, 5, 6, 7].includes(imgNumber) ? `/${imgNumber}.jpg` : null;
-    return {
-      id: imgNumber,
-      title: `Gallery Image ${imgNumber}`,
-      description: "Professional car detailing work",
-      src,
-    };
-  });
+  // Only show images 1,3,4,5,6,7
+  const galleryImages = [1, 3, 4, 5, 6, 7].map(num => ({
+    id: num,
+    title: `Gallery Image ${num}`,
+    description: "Professional car detailing work",
+    src: `/${num}.jpg`,
+  }));
 
   // Modal state for lightbox
   const [lightbox, setLightbox] = useState<{ src: string; title: string } | null>(null);
@@ -83,25 +69,17 @@ export function Gallery() {
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <CardContent className="p-0">
-                  {image.src ? (
-                    <img
-                      src={image.src}
-                      alt={image.title}
-                      className="aspect-square object-cover w-full h-full cursor-pointer"
-                      onClick={() => setLightbox({ src: image.src!, title: image.title })}
-                      onError={e => {
-                        // Hide broken image, show placeholder
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                        const placeholder = target.nextElementSibling as HTMLElement;
-                        if (placeholder) placeholder.style.display = 'flex';
-                      }}
-                    />
-                  ) : null}
-                  {/* Placeholder for image or fallback */}
-                  <div style={{ display: image.src ? 'none' : 'flex' }}>
-                    <Placeholder title={image.title} />
-                  </div>
+                  <img
+                    src={image.src}
+                    alt={image.title}
+                    className="aspect-square object-cover w-full h-full cursor-pointer"
+                    onClick={() => setLightbox({ src: image.src, title: image.title })}
+                    onError={e => {
+                      // Hide broken image
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                    }}
+                  />
                   {/* Image info overlay */}
                   <div className="p-4">
                     <h3 className="font-semibold text-sm">{image.title}</h3>
@@ -131,9 +109,11 @@ export function Gallery() {
                       Book Your Detail
                     </Button>
                   </Link>
-                  <Button variant="outline" className="border-border hover:bg-secondary/50">
-                    View Services
-                  </Button>
+                  <a href="#services" className="w-full sm:w-auto">
+                    <Button variant="outline" className="border-border hover:bg-secondary/50 w-full">
+                      View Services
+                    </Button>
+                  </a>
                 </div>
               </CardContent>
             </Card>

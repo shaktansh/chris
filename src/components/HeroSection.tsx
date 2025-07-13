@@ -58,13 +58,15 @@ export function HeroSection() {
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
               
-              <Button 
-                variant="outline" 
-                size="lg"
-                className="border-border hover:bg-secondary/50 text-lg px-8 py-6"
-              >
-                View Services
-              </Button>
+              <a href="#services" className="w-full sm:w-auto">
+                <Button 
+                  variant="outline" 
+                  size="lg"
+                  className="border-border hover:bg-secondary/50 text-lg px-8 py-6 w-full"
+                >
+                  View Services
+                </Button>
+              </a>
             </div>
           </div>
         </div>
